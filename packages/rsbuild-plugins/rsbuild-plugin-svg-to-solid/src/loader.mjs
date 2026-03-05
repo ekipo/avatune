@@ -144,10 +144,10 @@ export default SvgComponent;
   return { jsxSource, raw: svg }
 }
 
-const compileWithBabel = async (jsxSource, resourcePath) => {
+const compileWithBabel = async (jsxSource, resourcePath, solidPresetOptions = {}) => {
   const result = await babel.transformAsync(jsxSource, {
     filename: resourcePath || 'component.jsx',
-    presets: [solidPresetPath],
+    presets: [[solidPresetPath, solidPresetOptions]],
     babelrc: false,
     configFile: false,
   })
@@ -162,7 +162,7 @@ const transformSvg = callbackify(async (contents, options = {}, state = {}) => {
     resourcePath,
   )
 
-  const compiledCode = await compileWithBabel(jsxSource, resourcePath)
+  const compiledCode = await compileWithBabel(jsxSource, resourcePath, options.solidPresetOptions || {})
 
   const out = `${compiledCode}
 export const raw = ${JSON.stringify(raw)};

@@ -14,6 +14,7 @@ export type PluginOptions = {
   debug?: boolean
   imports?: string
   replaceAttrValues?: Record<string, string>
+  solidPresetOptions?: Record<string, unknown>
 }
 
 const SVG_REGEX = /\.svg$/
@@ -132,6 +133,7 @@ export const pluginSvgToSolid = (
             svgoConfig: merged.svgoConfig,
             imports: options.imports,
             replaceAttrValues,
+            solidPresetOptions: options.solidPresetOptions,
           })
           .end()
       } catch (e) {

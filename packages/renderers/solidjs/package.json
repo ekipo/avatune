@@ -29,6 +29,7 @@
   "type": "module",
   "exports": {
     ".": {
+      "solid": "./src/index.tsx",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
@@ -36,7 +37,8 @@
   },
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "rslib build",

@@ -23,6 +23,26 @@ export default defineConfig({
       syntax: ['node 18'],
       dts: false,
     },
+    {
+      format: 'esm',
+      syntax: ['node 18'],
+      dts: false,
+      source: {
+        entry: {
+          'solid-ssr': './src/solid.ts',
+        },
+      },
+      plugins: [
+        pluginSvgToSolid({
+          svgo: true,
+          svgoConfig,
+          imports: colordImport,
+          replaceAttrValues: getReplaceAttrValues('color'),
+          solidPresetOptions: { generate: 'ssr' },
+        }),
+        pluginSolid(),
+      ],
+    },
   ],
   output: {
     minify: {

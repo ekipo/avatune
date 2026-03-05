@@ -46,6 +46,7 @@
       "require": "./dist/react-native.cjs"
     },
     "./solid": {
+      "node": "./dist/solid-ssr.js",
       "types": "./dist/solid.d.ts",
       "import": "./dist/solid.js",
       "require": "./dist/solid.cjs"

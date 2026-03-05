@@ -60,6 +60,7 @@
       "import": "./dist/svelte.js"
     },
     "./solidjs": {
+      "node": "./dist/solidjs.js",
       "types": "./dist/solidjs.d.ts",
       "import": "./dist/solidjs.js"
     },

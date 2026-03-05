@@ -11,9 +11,7 @@ import {
   selectItems,
 } from '@avatune/utils'
 import type { JSX } from 'solid-js'
-import { createMemo, For, Show, splitProps } from 'solid-js'
-
-const uid = () => Math.random().toString(36).slice(2, 9)
+import { createMemo, createUniqueId, For, Show, splitProps } from 'solid-js'
 
 export type AvatarProps<T extends SolidJsTheme = SolidJsTheme> = AvatarConfig<
   SolidJsAvatarItem,
@@ -55,8 +53,8 @@ export function Avatar<T extends SolidJsTheme = SolidJsTheme>(
       ][],
   )
 
-  const clipId = uid()
-  const uidValue = uid()
+  const clipId = createUniqueId()
+  const uidValue = createUniqueId()
 
   const scaleFactor = createMemo(() => size() / local.theme.style.size)
   const borderRadius = createMemo(() =>

@@ -10,6 +10,10 @@ export default defineConfig({
   vite: {
     // @ts-expect-error - tailwindcss types are not compatible with astro
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['@tensorflow/tfjs'],
+      exclude: ['@mediapipe/tasks-vision'],
+    },
     ssr: {
       noExternal: ['zod'],
       external: [

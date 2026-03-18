@@ -5,7 +5,7 @@
 
 Browser-based hair length prediction using TensorFlow.js. Classifies hair into 3 categories: short, medium, long.
 
-Tiny model (~110KB) with blazingly fast loading and inference in the browser.
+Lightweight model (~2.3MB) with fast loading and inference in the browser.
 
 ## Installation
 
@@ -132,7 +132,7 @@ Predicts hair length from an image element. Automatically detects and crops the 
 - Classes: 3 (short, medium, long)
 - Training: CelebAMask-HQ dataset
 - Accuracy: ~82%
-- Model size: ~110KB (uint8 quantized)
+- Model size: ~2.3MB (uint8 quantized)
 - Format: TensorFlow.js with uint8 quantization
 
 ## License

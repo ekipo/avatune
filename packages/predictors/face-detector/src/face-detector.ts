@@ -30,15 +30,23 @@ export type FaceDetectorOptions = {
   wasmPath?: string
   modelPath?: string
   minDetectionConfidence?: number
+  delegate?: 'GPU' | 'CPU'
 }
 
 async function initDetector(
   options: FaceDetectorOptions = {},
 ): Promise<FaceDetectorState> {
+  const defaultDelegate =
+    typeof navigator !== 'undefined' &&
+    /iPhone|iPad|iPod/.test(navigator.userAgent)
+      ? ('CPU' as const)
+      : ('GPU' as const)
+
   const {
     wasmPath = DEFAULT_WASM_PATH,
     modelPath = DEFAULT_MODEL_PATH,
     minDetectionConfidence = 0.5,
+    delegate = defaultDelegate,
   } = options
 
   const vision = await FilesetResolver.forVisionTasks(wasmPath)
@@ -46,7 +54,7 @@ async function initDetector(
   const detector = await FaceDetector.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath: modelPath,
-      delegate: 'GPU',
+      delegate,
     },
     runningMode: 'IMAGE',
     minDetectionConfidence,
@@ -145,7 +153,7 @@ function cropFaceFromCanvas(
   croppedCanvas.width = cropWidth
   croppedCanvas.height = cropHeight
 
-  const ctx = croppedCanvas.getContext('2d')
+  const ctx = croppedCanvas.getContext('2d', { colorSpace: 'srgb' })
   if (!ctx) throw new Error('Failed to get canvas context')
 
   ctx.drawImage(
@@ -180,7 +188,9 @@ function imageToCanvas(
     canvas.height = image.naturalHeight || image.height
   }
 
-  const ctx = canvas.getContext('2d')
+  // Force sRGB color space — Safari defaults to Display P3 which shifts
+  // color values and hurts color-dependent predictions (hair color, skin tone)
+  const ctx = canvas.getContext('2d', { colorSpace: 'srgb' })
   if (!ctx) throw new Error('Failed to get canvas context')
 
   ctx.drawImage(image, 0, 0)

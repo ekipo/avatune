@@ -1,0 +1,55 @@
+/*
+ * Landing page styles — only rules that can't sensibly be Tailwind utilities.
+ * Imported from src/pages/index.astro.
+ */
+
+@layer components {
+  /*
+   * Checker-pattern overlay on the avatar preview circle.
+   * Two stacked diagonal gradients with offset background-position — too noisy
+   * as an arbitrary `before:bg-[...]` chain. Keep here for readability.
+   */
+  .pg-frame-checker::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-size: 8px 8px;
+    background-image:
+      linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.025) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255, 255, 255, 0.025) 75%
+      ),
+      linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.025) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255, 255, 255, 0.025) 75%
+      );
+    background-position:
+      0 0,
+      4px 4px;
+  }
+
+  /*
+   * Shiki emits HTML we don't author (`.shiki pre > code > span`) — we need a
+   * descendant-selector reach. Tailwind utilities on our wrapper can't get
+   * inside the rendered tree.
+   */
+  .code-shell .shiki {
+    margin: 0;
+    padding: 16px 18px;
+    background: transparent !important;
+    font-family: var(--font-code) !important;
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .code-shell .shiki code {
+    background: transparent !important;
+    font-family: var(--font-code) !important;
+  }
+}

@@ -5,7 +5,7 @@
 
 Browser-based facial hair prediction using TensorFlow.js. Classifies faces into 2 categories: none (clean-shaven) or facial_hair (beard, mustache, etc.).
 
-Tiny model (~2.3MB) with fast loading and inference in the browser.
+Lightweight model (~2.3MB) with fast loading and inference in the browser.
 
 ## Installation
 

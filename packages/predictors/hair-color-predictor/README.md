@@ -5,7 +5,7 @@
 
 Browser-based hair color prediction using TensorFlow.js. Classifies hair into 4 categories: black, brown, blond, gray.
 
-Tiny model (~110KB) with blazingly fast loading and inference in the browser.
+Lightweight model (~2.3MB) with fast loading and inference in the browser.
 
 ## Installation
 

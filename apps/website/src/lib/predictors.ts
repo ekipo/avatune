@@ -3,6 +3,7 @@ import { createHairColorPredictor } from '@avatune/hair-color-predictor'
 import { createHairLengthPredictor } from '@avatune/hair-length-predictor'
 import { createSkinTonePredictor } from '@avatune/skin-tone-predictor'
 import type { Predictions } from '@avatune/types'
+import * as tf from '@tensorflow/tfjs'
 
 export type Predictors = {
   hairColor: ReturnType<typeof createHairColorPredictor>
@@ -12,6 +13,13 @@ export type Predictors = {
 }
 
 export async function initializePredictors(): Promise<Predictors> {
+  // iOS WebGL produces different inference results for sensitive models.
+  // CPU backend guarantees consistent float32 precision across devices.
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    await tf.setBackend('cpu')
+    await tf.ready()
+  }
+
   const hairColorPredictor = createHairColorPredictor()
   const hairLengthPredictor = createHairLengthPredictor()
   const skinTonePredictor = createSkinTonePredictor()

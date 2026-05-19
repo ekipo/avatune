@@ -21,8 +21,34 @@ async function loadModel(modelDir: string): Promise<ModelState> {
   const modelPath = `${normalizedDir}/model.json`
 
   try {
-    // Load model directly from URL - TFJS handles MobileNetV2 nested structure better this way
-    const model = await tf.loadLayersModel(modelPath)
+    const response = await fetch(modelPath)
+    const modelJSON = await response.json()
+
+    if (
+      modelJSON.modelTopology?.model_config?.config?.layers?.[0]?.class_name ===
+      'InputLayer'
+    ) {
+      const inputLayer = modelJSON.modelTopology.model_config.config.layers[0]
+      if (inputLayer.config.batch_shape) {
+        const batchShape = inputLayer.config.batch_shape
+        inputLayer.config.inputShape = batchShape.slice(1)
+        delete inputLayer.config.batch_shape
+      }
+    }
+
+    const weightsManifest = modelJSON.weightsManifest
+    const weightsPath = `${normalizedDir}/${weightsManifest[0].paths[0]}`
+    const weightsResponse = await fetch(weightsPath)
+    const weightsData = await weightsResponse.arrayBuffer()
+
+    const model = await tf.loadLayersModel(
+      tf.io.fromMemory({
+        modelTopology: modelJSON.modelTopology,
+        weightSpecs: weightsManifest[0].weights,
+        weightData: weightsData,
+      }),
+    )
+
     const classes = await loadClasses(normalizedDir)
 
     return { model, classes }
